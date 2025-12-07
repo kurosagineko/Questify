@@ -1,10 +1,15 @@
 import registerLoginRoute from './server/routes/registerLoginRoutes.js';
 import taskRoutes from './server/routes/tasksRoutes.js';
+import userRoutes from './server/routes/userRoutes.js';
 import express from 'express';
 import sequelize from './server/config/db.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { rateLimit } from 'express-rate-limit';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -44,9 +49,18 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(limiter);
+app.set('etag', false);
 
 app.use('/api', registerLoginRoute);
-app.use('/api/', taskRoutes);
+app.use('/api', taskRoutes);
+app.use('/api', userRoutes);
+
+app.use(express.static(path.join(__dirname, 'client', 'dist')));
+
+// SPA fallback – must be LAST
+// app.get('*', (req, res) => {
+// 	res.sendFile(path.join(__dirname, 'client', 'dist', './index.html'));
+// });
 
 app.use((err, req, res, next) => {
 	console.error('error:', err);

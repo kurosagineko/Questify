@@ -1,8 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './CSS/xpbar.css';
 
-export default function XpBar() {
-	const [xp, setXP] = useState('20');
+export default function XpBar({ xpToAdd }) {
+	const [xp, setXP] = useState(20);
+
+	useEffect(() => {
+		if (xpToAdd == null) return;
+		setXP(prev => {
+			const newXP = prev + xpToAdd;
+			return newXP >= 100 ? 0 : newXP;
+		});
+	}, [xpToAdd]);
 
 	const progressStyle = {
 		display: 'flex',
@@ -21,15 +29,15 @@ export default function XpBar() {
 			<div
 				className='progress'
 				role='progressbar'
-				aria-valuenow={xp}
+				aria-valuenow={xp.toString()}
 				aria-valuemin='0'
 				aria-valuemax='100'
 			>
 				<div style={{ ...progressStyle, width: `${xp}%` }}>
-					<p style={{ height: 'fit-content', color: 'var(--secondary-color)' }}>{xp}%</p>
+					<p style={{ height: 'fit-content', color: 'var(--secondary-color)' }}>{xp.toString()}%</p>
 				</div>
 			</div>
-			<p>Next: Level 2</p>
+			<p>⭐</p>
 		</div>
 	);
 }

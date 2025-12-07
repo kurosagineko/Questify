@@ -45,14 +45,11 @@ export default function CardButton({
 		};
 
 		try {
-			const response = await fetch(
-				`http://localhost:3002/api/tasks/${task_id}`,
-				{
-					method: 'PUT',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(payload),
-				}
-			);
+			const response = await fetch(`/api/tasks/${task_id}`, {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload),
+			});
 
 			if (!response.ok) {
 				console.log(response.status);

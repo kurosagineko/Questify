@@ -11,6 +11,7 @@ import './CSS/dashboard.css';
 import avatarDefault from '../assets/avatardefault.svg';
 import burgerMenuIcon from '../assets/BurgerMenuIcon.png';
 
+// email verification
 // gaining xp, leveling up, gaining a star - logic, animations and images, tasks give 10xp, 100xp to level up, company sets star reward prices
 // authenticate all routes
 // show dashboard btn on landing instead of login register if already logged in
@@ -34,6 +35,7 @@ export default function Dashboard() {
 	const { user, logout } = useAuth();
 	const [level, setLevel] = useState(0);
 	const [xp, setTotalXp] = useState(0);
+  const [currentXp, setCurrentXp] = useState(0);
 	const [username, setUsername] = useState('');
 	const [avatar, setAvatar] = useState(avatarDefault);
 	const [taskList, setTaskList] = useState([]);
@@ -46,7 +48,8 @@ export default function Dashboard() {
 	useEffect(() => {
 		console.log('Dashboard', user);
 		setLevel(user.level);
-		setTotalXp(user.xp);
+		setTotalXp(user.total_xp);
+		setCurrentXp(user.current_xp);
 		setUsername(user.username);
 		if (user.avatar_url !== '') setAvatar(user.avatar_url);
 	}, []);
@@ -55,7 +58,7 @@ export default function Dashboard() {
 		const abort = new AbortController();
 
 		try {
-			fetch(`http://localhost:3002/api/tasks?user_id=${user.id}`, {
+			fetch(`/api/tasks?user_id=${user.id}`, {
 				signal: abort.signal,
 			})
 				.then(res => {

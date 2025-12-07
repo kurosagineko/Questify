@@ -27,14 +27,19 @@ export default (sequelize, DataTypes) => {
 				defaultValue: 1,
 				allowNull: false,
 			},
-			xp: {
+			total_xp: {
+				type: DataTypes.INTEGER.UNSIGNED,
+				defaultValue: 0,
+				allowNull: false,
+			},
+			current_xp: {
 				type: DataTypes.INTEGER.UNSIGNED,
 				defaultValue: 0,
 				allowNull: false,
 			},
 			theme: {
 				type: DataTypes.STRING(50),
-				defaultValue: 'dark',
+				defaultValue: 'navy',
 				allowNull: false,
 			},
 			avatar_url: {

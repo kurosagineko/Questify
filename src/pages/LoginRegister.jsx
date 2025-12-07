@@ -67,13 +67,13 @@ export default function LoginRegister() {
 		let response;
 
 		if (state?.fromLandingBtn === 'login') {
-			response = await sendData('http://localhost:3002/api/login', formDataLogin);
+			response = await sendData('/api/login', formDataLogin);
 		} else {
 			if (formDataRegister.password !== passwordMatch) {
 				console.log('Passwords must match');
 				return;
 			}
-			response = await sendData('http://localhost:3002/api/register', formDataRegister);
+			response = await sendData('/api/register', formDataRegister);
 		}
 
 		const responseData = await response.json();

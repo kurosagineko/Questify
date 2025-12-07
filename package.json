@@ -6,6 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"start": "node ./server.js",
+		"reset": "npm run createDB && npm run start",
 		"dev": "vite",
 		"build": "vite build",
 		"lint": "eslint .",

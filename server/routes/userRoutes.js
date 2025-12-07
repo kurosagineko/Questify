@@ -25,14 +25,16 @@ router.put(
 	authenticate,
 	[
 		body('username')
-			.optional.trim()
-			.isAlphanumeric({ ignore: '_-' })
+			.optional()
+			.trim()
+			.isAlphanumeric('en-US', { ignore: '_-' })
 			.withMessage('Username may only contain letters & numbers')
 			.isLength({ max: 50 })
 			.withMessage('Username may be at most 50 characters'),
 
 		body('email')
-			.optional.trim()
+			.optional()
+			.trim()
 			.isEmail()
 			.normalizeEmail()
 			.withMessage('Must be a valid email address')
@@ -45,7 +47,7 @@ router.put(
 			.withMessage('Current password is required')
 			.withMessage('Password must be at least 8 characters'),
 
-		body('new_password').optional.isLength({ min: 8 }).withMessage('Password must be at least 8 characters'),
+		body('new_password').optional().isLength({ min: 8 }).withMessage('Password must be at least 8 characters'),
 
 		body('avatar_url').optional({ checkFalsy: true }).trim().isURL().withMessage('Avatar URL must be a valid URL'),
 		validate,
@@ -101,3 +103,5 @@ router.put(
 		}
 	}
 );
+
+export default router;

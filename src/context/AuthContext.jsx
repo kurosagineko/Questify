@@ -16,8 +16,9 @@ export const AuthProvider = ({ children }) => {
 	useEffect(() => {
 		const checkSession = async () => {
 			try {
-				const res = await fetch('http://localhost:3002/api/me', {
+				const res = await fetch('/api/me', {
 					credentials: 'include',
+					cache: 'no-store',
 				});
 
 				if (!res.ok) throw new Error('not logged in');
@@ -39,8 +40,7 @@ export const AuthProvider = ({ children }) => {
 
 	const logout = async () => {
 		try {
-			await fetch('http://localhost:3002/api/logout', {
-				method: 'POST',
+			await fetch('/api/logout', {
 				credentials: 'include',
 			});
 		} catch (error) {

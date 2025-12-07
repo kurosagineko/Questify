@@ -13,6 +13,7 @@ import {
 } from '../models/indexModel.js';
 import { uniqueWorkspaceCode } from '../scripts/util.js';
 import { query, body, param, validationResult } from 'express-validator';
+import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -21,6 +22,16 @@ const BCRYPT_COST = parseInt(process.env.BCRYPT_COST) || 10;
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '6h';
 const ACCESS_TTL = parseInt(process.env.ACCESS_TOKEN_TTL, 10) || 21600;
+
+const isProd = process.env.NODE_ENV === 'production';
+const cookieOptions = {
+	httpOnly: true,
+	secure: isProd,
+	sameSite: isProd ? 'None' : 'Lax', // None for cross‑origin, Lax for same‑origin
+	maxAge: ACCESS_TTL * 1000, // ms
+	path: '/',
+	...(isProd && { partitioned: true }),
+};
 
 router.use(express.json());
 
@@ -36,50 +47,71 @@ const validate = (req, res, next) => {
 	next();
 };
 
-router.get('/me', (req, res) => {
+// =================== auth =================================
+router.get('/me', async (req, res) => {
 	const token = req.cookies?.token;
 
 	if (!token) {
-		return res.status(401).json({ error: { message: 'Not authenticated' } });
+		return res.status(401).json({ error: 'Not authenticated' });
 	}
 
+	let payload;
 	try {
-		const payload = jwt.verify(token, process.env.JWT_SECRET || 'dev-secret');
-		User.findByPk(payload.id, {
+		payload = jwt.verify(token, process.env.JWT_SECRET || 'dev-secret');
+		console.log('payload: ', payload);
+	} catch (jwt_error) {
+		console.log('JWT error: ', jwt_error);
+		return res.status(401).json({ error: 'Invalid or expired token' });
+	}
+
+	let user;
+	try {
+		user = await User.unscoped().findByPk(payload.id, {
 			attributes: [
 				'id',
 				'username',
 				'email',
-				'role',
 				'level',
-				'xp',
+				'total_xp',
+				'current_xp',
 				'numTasksCompleted',
 				'theme',
 				'avatar_url',
 			],
-		})
-			.then(user => {
-				if (!user) throw new Error('User not found');
-				return res.json({ data: { user } });
-			})
-			.catch(e => {
-				console.error('User lookup failed →', e);
-				return res.status(500).json({ error: { message: 'Server error' } });
-			});
-	} catch (e) {
-		console.error('Token verification failed →', e);
-		return res.status(401).json({ error: { message: 'Invalid token' } });
+		});
+		console.log('user: ', user?.toJSON ? user.toJSON() : user);
+	} catch (db_error) {
+		console.log('Error finding user: ', db_error);
+		return res.status(500).json({ error: 'Database error' });
 	}
+
+	if (!user) {
+		console.log('No user found for id', payload.id);
+		return res.status(404).json({ error: 'User not found' });
+	}
+
+	res.set('Cache-Control', 'no-store, private, max-age=0, must-revalidate');
+
+	return res.status(200).json({
+		data: {
+			user: {
+				id: user.id,
+				username: user.username,
+				email: user.email,
+				level: user.level,
+				total_xp: user.total_xp,
+				current_xp: user.current_xp,
+				numTasksCompleted: user.numTasksCompleted,
+				theme: user.theme,
+				avatar_url: user.avatar_url,
+			},
+		},
+	});
 });
 
 router.post('/logout', (req, res) => {
-	res.clearCookie('token', {
-		httpOnly: true,
-		secure: true,
-		sameSite: 'none',
-		path: '/',
-	});
-	return res.json({ data: { message: 'Logged out' } });
+	res.clearCookie('token', cookieOptions);
+	return res.status(200).json({ data: 'Logged out' });
 });
 
 // =========================== Register ============================
@@ -90,7 +122,7 @@ router.post(
 			.trim()
 			.notEmpty()
 			.withMessage('Username is required')
-			.isAlphanumeric({ ignore: '_-' })
+			.isAlphanumeric('en-US', { ignore: '_-' })
 			.withMessage('Username may only contain letters, numbers, underscored or hyphens')
 			.isLength({ max: 50 })
 			.withMessage('Username may be at most 50 characters'),
@@ -114,7 +146,7 @@ router.post(
 		validate,
 	],
 	async (req, res) => {
-		const { username, email, password, role, avatar_url } = req.body;
+		const { username, email, password, avatar_url } = req.body;
 
 		const duplicate = await User.findOne({
 			where: {
@@ -139,7 +171,6 @@ router.post(
 					username,
 					email,
 					password_hash: hashedPass,
-					role, // might remove this as its redundant
 					avatar_url: avatar_url || null,
 				},
 				{ transaction }
@@ -202,21 +233,15 @@ router.post(
 				id: newUser.id,
 				username: newUser.username,
 				email: newUser.email,
-				role: newUser.role,
 				level: newUser.level,
-				xp: newUser.xp,
-				numTasks: newUser.numTasksCompleted,
+				total_xp: newUser.total_xp,
+				current_xp: newUser.current_xp,
+				numTnumTasksCompletedasks: newUser.numTasksCompleted,
 				theme: newUser.theme,
 				avatar_url: newUser.avatar_url,
 			});
 
-			res.cookie('token', token, {
-				httpOnly: true,
-				secure: true,
-				sameSite: 'none',
-				maxAge: ACCESS_TTL * 1000,
-				path: '/',
-			});
+			res.cookie('token', token, cookieOptions);
 
 			res.status(201).json({
 				data: {
@@ -226,10 +251,10 @@ router.post(
 						id: newUser.id,
 						username: newUser.username,
 						email: newUser.email,
-						role: newUser.role,
 						level: newUser.level,
-						xp: newUser.xp,
-						numTasks: newUser.numTasksCompleted,
+						total_xp: newUser.total_xp,
+						current_xp: newUser.current_xp,
+						numTasksCompleted: newUser.numTasksCompleted,
 						theme: newUser.theme,
 						avatar_url: newUser.avatar_url,
 					},
@@ -285,6 +310,9 @@ router.post(
 			const user = await User.findOne({ where: { email } });
 			if (!user) return res.status(401).json({ error: 'No user with that email address' });
 
+			console.log('🔐 Login attempt → email:', email);
+			console.log('🔐 Plain password from request →', password);
+			console.log('🔐 User record from DB →', user?.toJSON ? user.toJSON() : user);
 			const password_match = await bcrypt.compare(password, user.password_hash);
 			if (!password_match) return res.status(401).json({ error: 'Incorrect password' });
 
@@ -292,23 +320,15 @@ router.post(
 				id: user.id,
 				username: user.username,
 				email: user.email,
-				role: user.role,
 				level: user.level,
-				xp: user.xp,
-				numTasks: user.numTasksCompleted,
+				total_xp: user.total_xp,
+				current_xp: user.current_xp,
+				numTasksCompleted: user.numTasksCompleted,
 				theme: user.theme,
 				avatar_url: user.avatar_url,
 			});
 
-			res.clearCookie('token');
-
-			res.cookie('token', token, {
-				httpOnly: true,
-				secure: true,
-				sameSite: 'none',
-				maxAge: ACCESS_TTL * 1000,
-				path: '/',
-			});
+			res.cookie('token', token, cookieOptions);
 
 			return res.status(200).json({
 				data: {
@@ -318,10 +338,10 @@ router.post(
 						id: user.id,
 						username: user.username,
 						email: user.email,
-						role: user.role,
 						level: user.level,
-						xp: user.xp,
-						numTasks: user.numTasksCompleted,
+						total_xp: user.total_xp,
+						current_xp: user.current_xp,
+						numTasksCompleted: user.numTasksCompleted,
 						theme: user.theme,
 						avatar_url: user.avatar_url,
 					},
