@@ -28,7 +28,7 @@ const features = [
 
 export default function Landing() {
 	return (
-		<div className='landing'>
+		<div className='landing navy'>
 			<LandingHeader />
 			<TextType
 				className='tagline'

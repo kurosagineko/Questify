@@ -97,7 +97,7 @@ export default function LoginRegister() {
 	};
 
 	return (
-		<div>
+		<div className='navy'>
 			{!loading ? (
 				<div>
 					{/* LOGIN */}

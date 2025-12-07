@@ -10,7 +10,7 @@ import './CSS/dashboard.css';
 import avatarDefault from '../assets/avatardefault.svg';
 import burgerMenuIcon from '../assets/BurgerMenuIcon.png';
 
-// gaining xp, leveling up, gaining a star - logic, animations and images
+// gaining xp, leveling up, gaining a star - logic, animations and images, tasks give 10xp, 100xp to level up, company sets star reward prices
 // authenticate all routes
 // show dashboard btn on landing instead of login register if already logged in
 // forgot password link
@@ -19,12 +19,12 @@ import burgerMenuIcon from '../assets/BurgerMenuIcon.png';
 // team vs team challenges 
 // show teams of workspace
 // show members of team
-// metrics got teams and metrics for workspace owners
+// metrics for teams and metrics for workspace owners
 // badges
 // achievements
 // get stars for leveling up, spend stars in a shop with company added rewards
 // individual store items and team wide store items
-// change theme
+// change theme through context
 // animations for leveling up, completing tasks, buying from store
 // slack and discord integration
 // 2FA
@@ -32,9 +32,7 @@ import burgerMenuIcon from '../assets/BurgerMenuIcon.png';
 export default function Dashboard() {
 	const { user, logout } = useAuth();
 	const [level, setLevel] = useState(0);
-	const [totalXp, setTotalXp] = useState(0);
-	const [nextXp, setNextXp] = useState(0);
-	const [xPSession, setXPSession] = useState(0);
+	const [xp, setTotalXp] = useState(0);
 	const [username, setUsername] = useState('');
 	const [avatar, setAvatar] = useState(avatarDefault);
 	const [taskList, setTaskList] = useState([]);
@@ -133,7 +131,9 @@ export default function Dashboard() {
 	};
 
 	return (
-		<div className='dashboard'>
+		<div className='dashboard navy'>
+			{' '}
+			{/* change navy to user selected theme */}
 			<div>
 				<div
 					className='modal-bg '
@@ -148,7 +148,6 @@ export default function Dashboard() {
 					/>
 				</div>
 			</div>
-
 			<div className='dash-header'>
 				<div className='burger-menu'>
 					<img
@@ -166,11 +165,10 @@ export default function Dashboard() {
 				<div className='widgets'>
 					<div className='level-widget dash-bg dash-border dash-shadow'>
 						<div className='current-level'>
-							<p>Level: {level}</p>
-							<p>Total XP: {totalXp}</p>
+							<p style={{ height: 'fit-content', borderRight: '2px solid var(--tertiary-color)' }}>Level: {level}</p>
+							<p style={{ height: 'fit-content' }}>Total: {xp}</p>
 						</div>
-						<p>XP To Next: {nextXp}</p>
-						<p>XP This session: {xPSession}</p>
+						<div></div>
 					</div>
 
 					<Link to='/profile'>
@@ -190,7 +188,6 @@ export default function Dashboard() {
 				</div>
 			</div>
 			{}
-
 			<div className='dash-main'>
 				{/* Add images for buttons here with onClick functionality */}
 				<div className='dash-buttons dash-border dash-shadow'>
