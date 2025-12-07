@@ -5,6 +5,7 @@ import TaskCard from '../components/TaskCard';
 import TaskList from '../components/TaskList';
 import TeamIconButton from '../components/TeamIconButton';
 import CreateTaskModal from '../components/CreateTaskModal';
+import XpBar from '../components/XpBar';
 import './CSS/dashboard.css';
 
 import avatarDefault from '../assets/avatardefault.svg';
@@ -16,7 +17,7 @@ import burgerMenuIcon from '../assets/BurgerMenuIcon.png';
 // forgot password link
 // Add a way to view and restore archived tasks
 // task streaks
-// team vs team challenges 
+// team vs team challenges
 // show teams of workspace
 // show members of team
 // metrics for teams and metrics for workspace owners
@@ -67,14 +68,10 @@ export default function Dashboard() {
 					const openTasks = data.tasks.filter(task => task.status === 'open');
 					setTaskList([...openTasks]);
 
-					const inprogressTasks = data.tasks.filter(
-						task => task.status === 'inprogress'
-					);
+					const inprogressTasks = data.tasks.filter(task => task.status === 'inprogress');
 					setInprogressList([...inprogressTasks]);
 
-					const completeTasks = data.tasks.filter(
-						task => task.status === 'complete'
-					);
+					const completeTasks = data.tasks.filter(task => task.status === 'complete');
 					setCompleteList([...completeTasks]);
 				});
 		} catch (error) {
@@ -188,6 +185,7 @@ export default function Dashboard() {
 				</div>
 			</div>
 			{}
+			<div>{<XpBar />}</div>
 			<div className='dash-main'>
 				{/* Add images for buttons here with onClick functionality */}
 				<div className='dash-buttons dash-border dash-shadow'>

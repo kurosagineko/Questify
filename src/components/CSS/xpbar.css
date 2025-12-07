@@ -1,0 +1,21 @@
+.xp-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 1000px;
+	height: 70px;
+	gap: 20px;
+	margin-top: 40px;
+	background-color: var(--secondary-color);
+	border: var(--border);
+	box-shadow: var(--box-shadow);
+	border-radius: 20px;
+}
+
+.progress {
+	padding: 0 !important;
+	width: 800px !important;
+	height: 30px;
+	background-color: var(--main-color);
+	border: var(--border);
+}

@@ -15,7 +15,7 @@
 .task-card:hover {
 	width: 400px;
 	cursor: pointer;
-	transform: scale(1.4);
+	transform: scale(1.2);
 	border: 4px solid var(--highlight-color);
 	z-index: 4;
 	overflow-x: visible;
