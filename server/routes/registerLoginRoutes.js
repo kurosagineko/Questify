@@ -334,12 +334,6 @@ router.post(
 				console.error('MySQL message   :', error.parent.sqlMessage);
 			}
 
-			// if (error.name === 'SequelizeUniqueConstraintError') {
-			// 	return res
-			// 		.status(409)
-			// 		.json({ error: { message: 'Email or username already taken' } });
-			// }
-
 			// Handle a "data too long" scenario
 			if (error.parent && error.parent.errno === 1406) {
 				return res.status(400).json({
