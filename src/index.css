@@ -19,6 +19,7 @@
   --main-color: #134074;
   --secondary-color: #13315C;
   --tertiary-color: #0B2545;
+  --complementary-color: #7becca;
 
   --border: 2px solid #0B2545;
   --box-shadow: 10px 10px 20px rgb(5, 0, 3);
@@ -27,7 +28,7 @@
   --complete-button-color: rgb(14, 134, 94);
   
 
-  background-color: #8DA9C4;
+  background: linear-gradient(to bottom, #8DA9C4, #7becca, #8DA9C4);
 
   font-family: "Lora", serif;
   line-height: 1.5;

@@ -18,7 +18,7 @@ export default function LandingHeader() {
 					className='custom-class'
 					fontSize='5rem'
 				>
-					Dashstar
+					Questify
 				</GradientText>
 			</div>
 

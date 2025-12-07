@@ -10,6 +10,7 @@ import './CSS/dashboard.css';
 import avatarDefault from '../assets/avatardefault.svg';
 import burgerMenuIcon from '../assets/BurgerMenuIcon.png';
 
+// gaining xp, leveling up, gaining a star - logic, animations and images
 // authenticate all routes
 // show dashboard btn on landing instead of login register if already logged in
 // forgot password link
@@ -22,6 +23,7 @@ import burgerMenuIcon from '../assets/BurgerMenuIcon.png';
 // badges
 // achievements
 // get stars for leveling up, spend stars in a shop with company added rewards
+// individual store items and team wide store items
 // change theme
 // animations for leveling up, completing tasks, buying from store
 // slack and discord integration

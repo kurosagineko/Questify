@@ -8,19 +8,20 @@ import './CSS/landing.css';
 const features = [
 	{
 		name: 'Manage your workflow.',
-		description: 'Tasks created by admins, direct to your board.',
+		description:
+			"Admins create tasks → they appear instantly on your board. Everyone knows what's next, so work never stalls.",
 		icon: '◈',
 	},
 	{
 		name: 'Earn XP, Level up. Win.',
 		description:
-			'Complete tasks to earn xp, compete with your team or against other teams, work with goals.',
+			'Complete tasks, collect XP, unlock stars. When you level up, you unlock team‑wide perks in the Reward Store.',
 		icon: '◈',
 	},
 	{
-		name: 'Database backups.',
+		name: 'Redeem Real Rewards.',
 		description:
-			'Everything is secured on a database, so no need to worry about losing your tasks.',
+			'Spend earned stars on company benefits, gift cards, or fun perks. Turn productivity into tangible value.',
 		icon: '◈',
 	},
 ];
