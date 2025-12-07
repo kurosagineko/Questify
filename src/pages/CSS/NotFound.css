@@ -1,0 +1,13 @@
+.NF-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 30px;
+	background-color: var(--main-color);
+	border: var(--border);
+	margin: 200px auto;
+	border-radius: 20px;
+	width: 404px;
+	height: 404px;
+}

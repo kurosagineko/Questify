@@ -15,14 +15,17 @@ import burgerMenuIcon from '../assets/BurgerMenuIcon.png';
 // forgot password link
 // Add a way to view and restore archived tasks
 // task streaks
+// team vs team challenges 
 // show teams of workspace
 // show members of team
-// metrics
+// metrics got teams and metrics for workspace owners
 // badges
 // achievements
 // get stars for leveling up, spend stars in a shop with company added rewards
 // change theme
 // animations for leveling up, completing tasks, buying from store
+// slack and discord integration
+// 2FA
 
 export default function Dashboard() {
 	const { user, logout } = useAuth();

@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Loading from '../components/Loading';
 
 export default function RequireAuth() {
 	const { user, loading } = useAuth();
@@ -8,7 +9,7 @@ export default function RequireAuth() {
 	if (loading) {
 		return (
 			<div className='flex h-screen items-center justify-center'>
-				<p className='text-gray-500'>Checking authentication …</p>
+				<Loading />
 			</div>
 		);
 	}
