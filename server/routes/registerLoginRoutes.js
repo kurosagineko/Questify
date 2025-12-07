@@ -90,8 +90,8 @@ router.post(
 			.trim()
 			.notEmpty()
 			.withMessage('Username is required')
-			.isAlphanumeric()
-			.withMessage('Username may only contain letters & numbers')
+			.isAlphanumeric({ ignore: '_-' })
+			.withMessage('Username may only contain letters, numbers, underscored or hyphens')
 			.isLength({ max: 50 })
 			.withMessage('Username may be at most 50 characters'),
 
@@ -110,14 +110,7 @@ router.post(
 			.isLength({ min: 8 })
 			.withMessage('Password must be at least 8 characters'),
 
-		body('role')
-			.isIn(['user', 'admin'])
-			.withMessage('Role must be either user or admin'),
-
-		body('avatar_url')
-			.optional({ checkFalsy: true })
-			.isURL()
-			.withMessage('Avatar URL must be a valid URL'),
+		body('avatar_url').optional({ checkFalsy: true }).isURL().withMessage('Avatar URL must be a valid URL'),
 		validate,
 	],
 	async (req, res) => {
@@ -253,9 +246,7 @@ router.post(
 			}
 
 			if (error.name === 'SequelizeUniqueConstraintError') {
-				return res
-					.status(409)
-					.json({ error: { message: 'Email or username already taken' } });
+				return res.status(409).json({ error: { message: 'Email or username already taken' } });
 			}
 
 			// Handle a "data too long" scenario
@@ -267,9 +258,7 @@ router.post(
 				});
 			}
 
-			return res
-				.status(500)
-				.json({ error: { message: 'Internal server error' } });
+			return res.status(500).json({ error: { message: 'Internal server error' } });
 		}
 	}
 );

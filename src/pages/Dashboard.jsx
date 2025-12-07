@@ -10,6 +10,7 @@ import './CSS/dashboard.css';
 import avatarDefault from '../assets/avatardefault.svg';
 import burgerMenuIcon from '../assets/BurgerMenuIcon.png';
 
+// authenticate all routes
 // show dashboard btn on landing instead of login register if already logged in
 // forgot password link
 // Add a way to view and restore archived tasks
@@ -21,6 +22,7 @@ import burgerMenuIcon from '../assets/BurgerMenuIcon.png';
 // achievements
 // get stars for leveling up, spend stars in a shop with company added rewards
 // change theme
+// animations for leveling up, completing tasks, buying from store
 
 export default function Dashboard() {
 	const { user, logout } = useAuth();

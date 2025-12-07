@@ -48,7 +48,7 @@ export default function CardButton({
 			const response = await fetch(
 				`http://localhost:3002/api/tasks/${task_id}`,
 				{
-					method: 'POST',
+					method: 'PUT',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify(payload),
 				}

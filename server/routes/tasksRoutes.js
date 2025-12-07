@@ -71,13 +71,14 @@ router.post('/tasks', async (req, res) => {
 
 		return res.status(201).json({ task_created: task });
 	} catch (error) {
+		if (transaction) await transaction.rollback();
 		console.error('Error while creating task:', error);
 		return res.status(500).json({ error: 'Failed to create task' });
 	}
 });
 
 //==================================== Edit ==============================================
-router.post('/tasks/:id', async (req, res) => {
+router.put('/tasks/:id', async (req, res) => {
 	const id = Number(req.params.id);
 	if (!Number.isInteger(id) || id <= 0) {
 		return res.status(400).json({ error: 'Invalid task id' });
@@ -98,10 +99,8 @@ router.post('/tasks/:id', async (req, res) => {
 
 	const changes = {};
 
-	if (task_name !== task.task_name || task_name !== '')
-		changes.task_name = task_name;
-	if (task_desc !== task.task_desc || task_desc !== '')
-		changes.task_desc = task_desc;
+	if (task_name !== task.task_name || task_name !== '') changes.task_name = task_name;
+	if (task_desc !== task.task_desc || task_desc !== '') changes.task_desc = task_desc;
 	if (status !== task.status) changes.status = status;
 
 	if (Object.keys(changes).length === 0) {
@@ -116,6 +115,7 @@ router.post('/tasks/:id', async (req, res) => {
 		const updatedTask = await Task.findByPk(id);
 		return res.status(201).json({ updatedTask: updatedTask });
 	} catch (error) {
+		if (transaction) await transaction.rollback();
 		console.error('Error while editing task:', error);
 		return res.status(500).json({ error: 'Failed to edit task' });
 	}
