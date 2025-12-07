@@ -7,7 +7,8 @@
 	margin: 300px auto;
 	width: 500px;
 	height: 500px;
-	background-color: var(--dash-element-bg);
-	border: var(--dash-element-border);
+	background-color: var(--secondary-color);
+	border: var(--border);
+  box-shadow: var(--box-shadow);
 	border-radius: 20px;
 }

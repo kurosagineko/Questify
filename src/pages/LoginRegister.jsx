@@ -1,7 +1,7 @@
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import logo from '../assets/dash-logo.png';
+import logo from '../assets/dash-icon.png';
 import './CSS/loginregister.css';
 import avatarDefault from '../assets/avatardefault.svg';
 import Loading from '../components/Loading';
@@ -67,19 +67,13 @@ export default function LoginRegister() {
 		let response;
 
 		if (state?.fromLandingBtn === 'login') {
-			response = await sendData(
-				'http://localhost:3002/api/login',
-				formDataLogin
-			);
+			response = await sendData('http://localhost:3002/api/login', formDataLogin);
 		} else {
 			if (formDataRegister.password !== passwordMatch) {
 				console.log('Passwords must match');
 				return;
 			}
-			response = await sendData(
-				'http://localhost:3002/api/register',
-				formDataRegister
-			);
+			response = await sendData('http://localhost:3002/api/register', formDataRegister);
 		}
 
 		const responseData = await response.json();
@@ -182,11 +176,7 @@ export default function LoginRegister() {
 										</div>
 									</div>
 
-									{msg && (
-										<p className='mt-2 text-center text-sm text-red-400'>
-											{msg}
-										</p>
-									)}
+									{msg && <p className='mt-2 text-center text-sm text-red-400'>{msg}</p>}
 
 									<div style={{ width: 'fit-content', margin: '10px auto' }}>
 										<button type='submit'>Sign in</button>
@@ -221,9 +211,7 @@ export default function LoginRegister() {
 									/>
 								</Link>
 
-								<h2 className='mt-10 text-center text-2xl/9 font-bold tracking-tight text-white'>
-									Create an account
-								</h2>
+								<h2 className='mt-10 text-center text-2xl/9 font-bold tracking-tight text-white'>Create an account</h2>
 							</div>
 
 							<div className='register-container'>
@@ -238,10 +226,7 @@ export default function LoginRegister() {
 											htmlFor='username'
 											className='block text-sm/6 font-medium text-gray-100 tx'
 										>
-											Username{' '}
-											<span style={{ color: '#ad002b', marginLeft: '10px' }}>
-												* Required
-											</span>
+											Username <span style={{ color: '#ad002b', marginLeft: '10px' }}>* Required</span>
 										</label>
 										<div className='mt-2'>
 											<input
@@ -261,10 +246,7 @@ export default function LoginRegister() {
 											htmlFor='email'
 											className='block text-sm/6 font-medium text-gray-100 tx'
 										>
-											Email address{' '}
-											<span style={{ color: '#ad002b', marginLeft: '10px' }}>
-												* Required
-											</span>
+											Email address <span style={{ color: '#ad002b', marginLeft: '10px' }}>* Required</span>
 										</label>
 										<div className='mt-2'>
 											<input
@@ -285,10 +267,7 @@ export default function LoginRegister() {
 												htmlFor='password'
 												className='block text-sm/6 font-medium text-gray-100'
 											>
-												Password{' '}
-												<span style={{ color: '#ad002b', marginLeft: '10px' }}>
-													* Required
-												</span>
+												Password <span style={{ color: '#ad002b', marginLeft: '10px' }}>* Required</span>
 											</label>
 										</div>
 										<div className='mt-2'>
@@ -309,10 +288,7 @@ export default function LoginRegister() {
 												htmlFor='passwordMatch'
 												className='block text-sm/6 font-medium text-gray-100'
 											>
-												Re-enter Password{' '}
-												<span style={{ color: '#ad002b', marginLeft: '10px' }}>
-													* Required
-												</span>
+												Re-enter Password <span style={{ color: '#ad002b', marginLeft: '10px' }}>* Required</span>
 											</label>
 										</div>
 										<div className='mt-2'>
@@ -356,23 +332,15 @@ export default function LoginRegister() {
 													objectFit: 'cover',
 													margin: '0 auto',
 													marginTop: '20px',
-													backgroundColor: '#4d0731',
+													backgroundColor: '#EEF4ED',
 												}}
-												src={
-													!formDataRegister.avatar_url
-														? avatarDefault
-														: formDataRegister.avatar_url
-												}
+												src={!formDataRegister.avatar_url ? avatarDefault : formDataRegister.avatar_url}
 												alt='Avatar image preview'
 											/>
 										</div>
 									</div>
 
-									{msg && (
-										<p className='mt-2 text-center text-sm text-red-400'>
-											{msg}
-										</p>
-									)}
+									{msg && <p className='mt-2 text-center text-sm text-red-400'>{msg}</p>}
 
 									<div style={{ width: 'fit-content', margin: '10px auto' }}>
 										<button type='submit'>Register</button>

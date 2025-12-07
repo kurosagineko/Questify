@@ -5,10 +5,10 @@
 	padding: 10px;
 	width: 90%;
 	height: 180px;
-	background-color: var(--grad-left);
-	border: var(--dash-element-border);
+	background-color: var(--main-color);
+	border: var(--border);
 	border-radius: 20px;
-	box-shadow: var(--dash-element-shadow);
+	box-shadow: var(--box-shadow);
 	will-change: transform;
 	transition: transform 0.25s ease, border 0.25s ease, box-shadow 0.25s ease;
 }
@@ -24,14 +24,14 @@
 .task-title {
 	font-size: 1.1rem;
 	padding-bottom: 5px;
-	border-bottom: 2px solid var(--dash-element-border-color);
+	border-bottom: 2px solid var(--tertiary-color);
 }
 
 .task-desc {
 	width: 100%;
 	height: 50%;
 	padding-top: 5px;
-	border-bottom: 2px solid var(--dash-element-border-color);
+	border-bottom: 2px solid var(--tertiary-color);
 }
 
 .task-buttons {

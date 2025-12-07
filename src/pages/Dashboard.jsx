@@ -89,20 +89,8 @@ export default function Dashboard() {
 
 	// make reusable
 	const TaskListPlaceHolder = () => {
-		const placeholderStyle = {
-			height: '100%',
-			width: '100%',
-			color: '#eba8ffff',
-			display: 'flex',
-			flexDirection: 'column',
-			justifyContent: 'center',
-			alignItems: 'center',
-			fontSize: '2rem',
-			border: '2px solid rgb(76, 0, 57)',
-			borderRadius: '20px',
-		};
 		return (
-			<div style={placeholderStyle}>
+			<div className='placeholder'>
 				<p>No tasks in this list</p>
 				{/* Maybe switch for an image here */}
 				<p>(～￣▽￣)～</p>

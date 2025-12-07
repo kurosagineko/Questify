@@ -11,7 +11,7 @@ nav button {
 
 .LandingHeaderBtn:hover {
   transform: scale(1.2);
-  border-color: #ff64dd;
+  border-color: var(--highlight-color);
 }
 
 

@@ -19,8 +19,8 @@
 	align-items: center;
 	width: 500px;
 	height: 600px;
-	background-color: var(--grad-left);
-	border: var(--dash-element-border);
+	background-color: var(--main-color);
+	border: var(--border);
 	border-radius: 20px;
 	margin: 200px auto;
 	z-index: 4;
@@ -50,8 +50,8 @@
 	width: 350px;
 	height: 30px;
 	margin-top: 5px;
-	background-color: var(--dash-element-bg);
-	border: var(--dash-element-border);
+	background-color: var(--secondary-color);
+	border: var(--border);
 }
 
 .text-area {

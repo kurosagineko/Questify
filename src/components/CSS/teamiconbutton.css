@@ -15,14 +15,13 @@
 
 .team-button:hover {
 	cursor: pointer;
-	border-color: #ff64dd;
+	border-color: var(--tertiary-color);
 }
 
 .team-name-popup {
 	position: relative;
-	background-color: var(--dash-element-bg);
-	border: var(--dash-element-border);
-	border-color: #ff64dd;
+	background-color: var(--main-color);
+	border: var(--border);
 	border-radius: 20px;
 	width: 200px;
 	margin-left: 20px;

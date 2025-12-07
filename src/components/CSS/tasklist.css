@@ -50,10 +50,10 @@
 	width: 8px;
 }
 .scroll-area::-webkit-scrollbar-thumb {
-	background: rgb(76, 0, 57);
+	background: var(--main-color);
 	border-radius: 4px;
 }
 .scroll-area {
 	scrollbar-width: thin;
-	scrollbar-color: rgb(141, 24, 145) rgb(76, 0, 57);
+	scrollbar-color: var(--secondary-color) var(--tertiary-color);
 }

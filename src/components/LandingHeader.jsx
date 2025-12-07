@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import GradientText from './GradientText';
-import logo from '../assets/dash-logo.png';
+import logo from '../assets/dash-icon.png';
 import './CSS/LandingHeader.css';
 
 export default function LandingHeader() {
@@ -13,14 +13,7 @@ export default function LandingHeader() {
 					className='logo mx-auto h-30 w-auto'
 				/>
 				<GradientText
-					colors={[
-						'rgb(87, 9, 41)',
-						'rgb(144, 74, 165)',
-						'rgb(122, 35, 71)',
-						'rgb(144, 74, 165)',
-						'rgb(87, 9, 41)',
-					]}
-					animationSpeed={3}
+					animationSpeed={8}
 					showBorder={false}
 					className='custom-class'
 					fontSize='5rem'

@@ -1,6 +1,7 @@
 .login-container {
-  background-color: var(--dash-element-bg);
-  border: var(--dash-element-border);
+  background-color: var(--secondary-color);
+  border: var(--border);
+  box-shadow: var(--box-shadow);
   border-radius: 20px;
   margin: 30px auto;
   width: 600px;
@@ -14,8 +15,8 @@
 }
 
 .register-container {
-  background-color: var(--dash-element-bg);
-  border: var(--dash-element-border);
+  background-color: var(--secondary-color);
+  border: var(--border);
   border-radius: 20px;
   margin: 30px auto;
   width: 600px;
