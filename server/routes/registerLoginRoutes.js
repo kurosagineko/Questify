@@ -126,9 +126,7 @@ router.post(
 			// Let the client know exactly what is duplicated
 			const conflictField = duplicate.email === email ? 'email' : 'username';
 			return res.status(409).json({
-				error: {
-					message: `A user with that ${conflictField} already exists`,
-				},
+				error: `A user with that ${conflictField} already exists`,
 			});
 		}
 
@@ -246,19 +244,17 @@ router.post(
 			}
 
 			if (error.name === 'SequelizeUniqueConstraintError') {
-				return res.status(409).json({ error: { message: 'Email or username already taken' } });
+				return res.status(409).json({ error: 'Email or username already taken' });
 			}
 
 			// Handle a "data too long" scenario
 			if (error.parent && error.parent.errno === 1406) {
 				return res.status(400).json({
-					error: {
-						message: 'One of the fields is too long for the database column.',
-					},
+					error: 'One of the fields is too long for the database column.',
 				});
 			}
 
-			return res.status(500).json({ error: { message: 'Internal server error' } });
+			return res.status(500).json({ error: 'Internal server error' });
 		}
 	}
 );
@@ -287,16 +283,10 @@ router.post(
 
 		try {
 			const user = await User.findOne({ where: { email } });
-			if (!user)
-				return res
-					.status(401)
-					.json({ error: { message: 'No user with that email address' } });
+			if (!user) return res.status(401).json({ error: 'No user with that email address' });
 
 			const password_match = await bcrypt.compare(password, user.password_hash);
-			if (!password_match)
-				return res
-					.status(401)
-					.json({ error: { message: 'Incorrect password' } });
+			if (!password_match) return res.status(401).json({ error: 'Incorrect password' });
 
 			const token = signToken({
 				id: user.id,
@@ -353,15 +343,11 @@ router.post(
 			// Handle a "data too long" scenario
 			if (error.parent && error.parent.errno === 1406) {
 				return res.status(400).json({
-					error: {
-						message: 'One of the fields is too long for the database column.',
-					},
+					error: 'One of the fields is too long for the database column.',
 				});
 			}
 
-			return res
-				.status(500)
-				.json({ error: { message: 'Internal server error' } });
+			return res.status(500).json({ error: 'Internal server error' });
 		}
 	}
 );
