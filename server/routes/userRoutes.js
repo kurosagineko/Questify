@@ -1,25 +1,16 @@
 import express from 'express';
 import { Router } from 'express';
-import { Op } from 'sequelize';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { User } from '../models/indexModel.js';
-import { uniqueWorkspaceCode } from '../scripts/util.js';
+import { authenticate } from '../middleware/authenticate.js';
 import { query, body, param, validationResult } from 'express-validator';
 import dotenv from 'dotenv';
 dotenv.config();
 
 const router = Router();
 const BCRYPT_COST = parseInt(process.env.BCRYPT_COST) || 10;
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '6h';
-const ACCESS_TTL = parseInt(process.env.ACCESS_TOKEN_TTL, 10) || 21600;
 
 router.use(express.json());
-
-function signToken(payload) {
-	return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
-}
 
 const validate = (req, res, next) => {
 	const errors = validationResult(req);
@@ -30,7 +21,8 @@ const validate = (req, res, next) => {
 };
 // ====================== Edit ==========================
 router.put(
-	'/user',
+	'/user/:id',
+	authenticate,
 	[
 		body('username')
 			.optional.trim()
@@ -47,7 +39,11 @@ router.put(
 			.isLength({ max: 150 })
 			.withMessage('Email may be at most 150 characters'),
 
-		body('current_password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters'),
+		body('current_password')
+			.exists({ checkFalsy: true })
+			.isLength({ min: 8 })
+			.withMessage('Current password is required')
+			.withMessage('Password must be at least 8 characters'),
 
 		body('new_password').optional.isLength({ min: 8 }).withMessage('Password must be at least 8 characters'),
 
@@ -55,13 +51,21 @@ router.put(
 		validate,
 	],
 	async (req, res) => {
-		const { user_id, username, email, current_password, new_password, theme, avatar_url } = req.body;
+		const authUserId = req.user.id;
+		const paramUserId = parseInt(req.params.id, 10);
+
+		if (authUserId !== paramUserId) {
+			return res.status(403).json({
+				error: { message: 'You are not allowed to edit this user' },
+			});
+		}
+
+		const { username, email, current_password, new_password, theme, avatar_url } = req.body;
 
 		// find the user
-		const user = await User.findOne({ where: { id: user_id } });
-
+		const user = await User.findByPk(paramUserId);
 		if (!user) {
-			return res.status(404).json({ error: 'User not found ' });
+			return res.status(404).json({ error: { message: 'User not found' } });
 		}
 
 		// check if current_password matches the users password in user_id row
@@ -71,12 +75,12 @@ router.put(
 		const changes = {};
 		if (username && username !== user.username) changes.username = username;
 		if (email && email !== user.email) changes.email = email;
+		if (theme !== user.theme) changes.theme = theme;
+		if (avatar_url && avatar_url !== user.avatar_url) changes.avatar_url = avatar_url;
 		if (new_password) {
 			const new_password_hash = await bcrypt.hash(new_password, BCRYPT_COST);
 			changes.password_hash = new_password_hash;
 		}
-		if (theme !== user.theme) changes.theme = theme;
-		if (avatar_url && avatar_url !== user.avatar_url) changes.avatar_url = avatar_url;
 
 		if (Object.keys(changes).length === 0) {
 			return res.status(400).json({ error: 'No change to apply' });
@@ -84,7 +88,7 @@ router.put(
 
 		try {
 			const transaction = await Task.sequelize.transaction();
-			await User.update(changes, { where: { id: user_id }, transaction });
+			await User.update(changes, { where: { id: paramUserId }, transaction });
 			await transaction.commit();
 
 			res.status(200).json({ message: 'Successfully edited user' });

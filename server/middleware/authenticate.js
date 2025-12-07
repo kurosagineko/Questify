@@ -24,15 +24,3 @@ export function authenticate(req, res, next) {
 		return res.status(401).json({ message: 'Invalid or expired token' });
 	}
 }
-
-export function requireAdmin(req, res, next) {
-	if (!req.user) {
-		return res.status(401).json({ message: 'Unauthorized' });
-	}
-
-	if (req.user.role !== 'admin') {
-		return res.status(403).json({ message: 'Forbidden' });
-	}
-
-	next();
-}
