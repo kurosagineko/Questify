@@ -7,6 +7,8 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { rateLimit } from 'express-rate-limit';
 import path from 'path';
+import bodyParser from 'body-parser';
+import { Ollama } from 'ollama';
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -57,11 +59,6 @@ app.use('/api', userRoutes);
 
 app.use(express.static(path.join(__dirname, 'client', 'dist')));
 
-// SPA fallback – must be LAST
-// app.get('*', (req, res) => {
-// 	res.sendFile(path.join(__dirname, 'client', 'dist', './index.html'));
-// });
-
 app.use((err, req, res, next) => {
 	console.error('error:', err);
 	const status = err.status || 500;
@@ -69,6 +66,31 @@ app.use((err, req, res, next) => {
 
 	res.status(status).json({ error: { message } });
 	next();
+});
+
+// Ollama client – ONLY on the server side
+const ollama = new Ollama({
+	host: 'http://127.0.0.1:11434',
+});
+
+// API endpoint that forwards the request
+app.post('/api/generate', async (req, res) => {
+	const { model, prompt, stream, temperature, keep_alive } = req.body;
+
+	try {
+		// If need streaming can expose it as SSE
+		const result = await ollama.generate({
+			model,
+			prompt,
+			stream: !!stream,
+			temperature,
+			keep_alive,
+		});
+		res.json(result);
+	} catch (err) {
+		console.error('Ollama error', err);
+		res.status(500).json({ error: err.message || 'Ollama failure' });
+	}
 });
 
 (async () => {

@@ -6,11 +6,14 @@ import TaskList from '../components/TaskList';
 import TeamIconButton from '../components/TeamIconButton';
 import CreateTaskModal from '../components/CreateTaskModal';
 import XpBar from '../components/XpBar';
+import AI from '../components/AI';
 import './CSS/dashboard.css';
 
 import avatarDefault from '../assets/avatardefault.svg';
 import burgerMenuIcon from '../assets/BurgerMenuIcon.png';
 
+// AI integration
+// daily quests
 // email verification
 // gaining xp, leveling up, gaining a star - logic, animations and images, tasks give 10xp, 100xp to level up, company sets star reward prices
 // authenticate all routes
@@ -35,10 +38,10 @@ export default function Dashboard() {
 	const { user, logout } = useAuth();
 	const [level, setLevel] = useState(0);
 	const [xp, setTotalXp] = useState(0);
-  const [currentXp, setCurrentXp] = useState(0);
+	const [currentXp, setCurrentXp] = useState(0);
 	const [username, setUsername] = useState('');
 	const [avatar, setAvatar] = useState(avatarDefault);
-	const [taskList, setTaskList] = useState([]);
+	const [openList, setOpenList] = useState([]);
 	const [inprogressList, setInprogressList] = useState([]);
 	const [completeList, setCompleteList] = useState([]);
 	const [currentBoard, setCurrentBoard] = useState('Personal');
@@ -69,7 +72,7 @@ export default function Dashboard() {
 				})
 				.then(data => {
 					const openTasks = data.tasks.filter(task => task.status === 'open');
-					setTaskList([...openTasks]);
+					setOpenList([...openTasks]);
 
 					const inprogressTasks = data.tasks.filter(task => task.status === 'inprogress');
 					setInprogressList([...inprogressTasks]);
@@ -226,7 +229,7 @@ export default function Dashboard() {
 				<div className='task-view-container dash-border dash-shadow'>
 					<CreateTaskList
 						title='Tasks'
-						list={taskList}
+						list={openList}
 						showCreateBtn={true}
 					/>
 					<CreateTaskList
@@ -240,6 +243,7 @@ export default function Dashboard() {
 				</div>
 			</div>
 			{/* <div className='metrics-view-container dash-border dash-shadow'></div> */}
+			<AI taskList={[...openList, ...inprogressList, ...completeList]} />
 		</div>
 	);
 }

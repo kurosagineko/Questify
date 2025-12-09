@@ -310,9 +310,6 @@ router.post(
 			const user = await User.findOne({ where: { email } });
 			if (!user) return res.status(401).json({ error: 'No user with that email address' });
 
-			console.log('🔐 Login attempt → email:', email);
-			console.log('🔐 Plain password from request →', password);
-			console.log('🔐 User record from DB →', user?.toJSON ? user.toJSON() : user);
 			const password_match = await bcrypt.compare(password, user.password_hash);
 			if (!password_match) return res.status(401).json({ error: 'Incorrect password' });
 
