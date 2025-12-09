@@ -32,6 +32,8 @@ const whitelist = [
 	'http://127.0.0.1:5173',
 	'http://localhost:4000',
 	'http://127.0.0.1:4000',
+	'http://questify.digital',
+	'https://questify.digital',
 	// URLs here,'https://my‑app.com'
 ];
 app.use(
