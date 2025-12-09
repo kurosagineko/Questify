@@ -12,7 +12,7 @@ import './CSS/dashboard.css';
 import avatarDefault from '../assets/avatardefault.svg';
 import burgerMenuIcon from '../assets/BurgerMenuIcon.png';
 
-// AI integration
+// more secure password
 // daily quests
 // email verification
 // gaining xp, leveling up, gaining a star - logic, animations and images, tasks give 10xp, 100xp to level up, company sets star reward prices
@@ -20,10 +20,11 @@ import burgerMenuIcon from '../assets/BurgerMenuIcon.png';
 // show dashboard btn on landing instead of login register if already logged in
 // forgot password link
 // Add a way to view and restore archived tasks
-// task streaks
-// team vs team challenges
 // show teams of workspace
 // show members of team
+
+// task streaks
+// team vs team challenges
 // metrics for teams and metrics for workspace owners
 // badges
 // achievements
@@ -32,7 +33,7 @@ import burgerMenuIcon from '../assets/BurgerMenuIcon.png';
 // change theme through context
 // animations for leveling up, completing tasks, buying from store
 // slack and discord integration
-// 2FA
+// 2FA and email verification
 
 export default function Dashboard() {
 	const { user, logout } = useAuth();
@@ -161,8 +162,8 @@ export default function Dashboard() {
 
 				<button onClick={() => logout()}>Logout</button>
 
-				<div className='workspace-label'>
-					<h2>{currentBoard}</h2>
+				<div className='workspace-label-container'>
+					<h2 className='workspace-label'>{currentBoard}</h2>
 				</div>
 
 				<div className='widgets'>

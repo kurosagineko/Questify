@@ -47,8 +47,8 @@
 }
 
 .profile-widget {
-  height: 120px;
-  width: 350px;
+  height: 80px;
+  width: 300px;
   display: flex;
   justify-content: space-evenly;
   gap: 20px;
@@ -67,8 +67,8 @@
 }
 .level-widget {
   
-  height: 120px;
-  width: 350px;
+  height: 80px;
+  width: 300px;
   margin: auto 0;
   border-radius: 20px;
   padding: 20px;
@@ -89,15 +89,15 @@
 .profile-pic-container {
   margin: auto 0;
   background-color: var(--highlight-color);
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   object-fit: cover;
 }
 
 .profile-pic {
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   object-fit: cover;
   border: var(--border)
@@ -108,7 +108,7 @@
   width: 95%;
   display: flex;
   justify-content: space-between;
-  margin: 50px;
+  margin: 20px;
 }
 
 .dash-buttons {
@@ -166,17 +166,21 @@
   border-radius: 20px;
 }
 
-.workspace-label {
-  font-size: 1.5rem;
+.workspace-label-container {
+  
   background-color: var(--main-color);
-  width: 300px;
-  height: 60px;
+  width: 250px;
+  height: 50px;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
   border: var(--border);
   border-radius: 20px;
+}
+
+.workspace-label {
+  font-size: 1.1rem;
 }
 
 .placeholder {
