@@ -1,8 +1,8 @@
-import registerLoginRoute from './server/routes/registerLoginRoutes.js';
-import taskRoutes from './server/routes/tasksRoutes.js';
-import userRoutes from './server/routes/userRoutes.js';
+import registerLoginRoute from './routes/registerLoginRoutes.js';
+import taskRoutes from './routes/tasksRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 import express from 'express';
-import sequelize from './server/config/db.js';
+import sequelize from './config/db.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { rateLimit } from 'express-rate-limit';
@@ -68,28 +68,24 @@ app.use((err, req, res, next) => {
 	next();
 });
 
-// Ollama client – ONLY on the server side
 const ollama = new Ollama({
 	host: 'http://127.0.0.1:11434',
 });
 
-// API endpoint that forwards the request
 app.post('/api/generate', async (req, res) => {
-	const { model, prompt, stream, temperature, keep_alive } = req.body;
+	const { model, prompt, stream } = req.body;
 
 	try {
-		// If need streaming can expose it as SSE
 		const result = await ollama.generate({
 			model,
 			prompt,
 			stream: !!stream,
-			temperature,
-			keep_alive,
+			keep_alive: '3m',
 		});
-		res.json(result);
-	} catch (err) {
-		console.error('Ollama error', err);
-		res.status(500).json({ error: err.message || 'Ollama failure' });
+		res.status(200).json(result);
+	} catch (error) {
+		console.error('Ollama error', error);
+		res.status(500).json({ error: error.message || 'Ollama failure' });
 	}
 });
 

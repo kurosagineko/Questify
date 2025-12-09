@@ -1,9 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import './CSS/AI.css';
 
-// start AI on dashboard load
 // history limit, possibly 100?
-// add ability to respond to users by username
 // prompt is getting too big with history and json
 
 export default function AIAssistant({ taskList, username }) {
@@ -15,7 +13,19 @@ export default function AIAssistant({ taskList, username }) {
 	const [msg, setMsg] = useState('');
 	const scrollRef = useRef(null);
 	const taskListJson = JSON.stringify(taskList);
+  const hasMounted = useRef(false);
+	const [isOpen, setIsOpen] = useState(false);
 	let prompt = '';
+
+	useEffect(() => {
+		if (hasMounted.current) return;
+		hasMounted.current = true;
+
+		// prompt the AI with 'Hello' to spin up the AI and also to add a message in the chat
+		prompt = 'Hello, please introduce yourself.';
+		setCurrentPromptList(prev => [...prev, prompt]);
+		getResponse();
+	}, []);
 
 	useEffect(() => {
 		const scroll = scrollRef.current;
@@ -38,7 +48,7 @@ export default function AIAssistant({ taskList, username }) {
 	const getResponse = async () => {
 		console.info('User prompt:', prompt);
 
-		setMsg('Thinking');
+		setMsg('Thinking...');
 
 		try {
 			const resp = await fetch('http://localhost:3002/api/generate', {
@@ -77,7 +87,12 @@ export default function AIAssistant({ taskList, username }) {
 					{responseList.map(item => (
 						<li key={responseList.indexOf(item)}>
 							<div>
-								<p className='userPrompt'>{currentPromptList[responseList.indexOf(item)]}</p>
+								<p
+									className='userPrompt'
+									style={responseList.indexOf(item) === 0 ? { display: 'none' } : {}}
+								>
+									{currentPromptList[responseList.indexOf(item)]}
+								</p>
 								<p className='response-container'>{item}</p>
 							</div>
 						</li>
@@ -104,46 +119,59 @@ export default function AIAssistant({ taskList, username }) {
 		getResponse();
 	};
 
-	return (
-		<div className='assistant-container'>
-			<h2>AI assistant</h2>
-			<div
-				className='ai-scroll-area'
-				ref={scrollRef}
-			>
-				<div className='response-area'>
-					<ResponseListComponent />
-					{msg && <p>{msg}</p>}
-				</div>
-			</div>
+	const toggleAiModalWindow = () => {
+		setIsOpen(prev => !prev);
+	};
 
-			<div>
-				<div className='ai-input'>
-					<form
-						className='prompt-form'
-						action='#'
-						method='POST'
-						onSubmit={handleOnSubmit}
-					>
-						<label htmlFor='prompt'></label>
-						<textarea
-							className='prompt-field'
-							name='prompt'
-							id='prompt'
-							value={formData}
-							onChange={onChange}
-							onKeyDown={handleKeyDown}
-							placeholder='Ask something...'
-						></textarea>
-						<div className='prompt-btn'>
-							<button
-								className='prompt-btn'
-								type='submit'
-							>
-								Send
-							</button>
-						</div>
-					</form>
+	return (
+		<div className={isOpen ? 'ai-modal-window ai-modal-open' : 'ai-modal-window ai-modal-closed'}>
+			<button
+				className='ai-modal-btn'
+				onClick={toggleAiModalWindow}
+			>
+				{isOpen ? <p>▶</p> : <p>💬</p>}
+			</button>
+
+			<div className='assistant-container'>
+				<h2>AI assistant</h2>
+				<div
+					className='ai-scroll-area'
+					ref={scrollRef}
+				>
+					<div className='response-area'>
+						<ResponseListComponent />
+						{msg && <p className='ai-message'>{msg}</p>}
+					</div>
+				</div>
+
+				<div>
+					<div className='ai-input'>
+						<form
+							className='prompt-form'
+							action='#'
+							method='POST'
+							onSubmit={handleOnSubmit}
+						>
+							<label htmlFor='prompt'></label>
+							<textarea
+								className='prompt-field'
+								name='prompt'
+								id='prompt'
+								value={formData}
+								onChange={onChange}
+								onKeyDown={handleKeyDown}
+								placeholder='Ask something...'
+							></textarea>
+							<div className='prompt-btn'>
+								<button
+									className='prompt-btn'
+									type='submit'
+								>
+									Send
+								</button>
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -1,4 +1,33 @@
+.ai-modal-window { 
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: fixed;
+}
+
+.ai-modal-closed {
+  
+  top: 0;
+  right: -35%;
+}
+
+.ai-modal-open {
+  top: 0;
+  right: 0;
+}
+
+.ai-modal-btn {
+  width: 75px;
+  height: 75px;
+  font-size: 2rem;
+  margin-bottom: 40px;
+  margin-right: 60px;
+  border: solid 3px var(--complementary-color);
+  background-color: var(--secondary-color);
+}
+
 .assistant-container {
+  
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -7,7 +36,7 @@
 	width: 600px;
 	height: 1000px;
 	background-color: var(--main-color);
-	border: var(--border);
+	border: solid 3px var(--complementary-color);
 	box-shadow: var(--box-shadow);
 	border-radius: 20px;
 	margin: 30px;
@@ -89,4 +118,15 @@
 	padding: 10px;
 	font-weight: bold;
 	margin-bottom: 10px;
+}
+
+.ai-message {
+  background-color: var(--highlight-color);
+  border: var(--border);
+  border-radius: 20px;
+  color: var(--main-color);
+  font-weight: bolder;
+  width: fit-content;
+  height: fit-content;
+  padding: 10px;
 }
