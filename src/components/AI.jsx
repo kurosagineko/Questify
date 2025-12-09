@@ -1,32 +1,37 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './CSS/AI.css';
 
 // start AI on dashboard load
 // history limit, possibly 100?
 // add ability to respond to users by username
+// prompt is getting too big with history and json
 
-export default function AIAssistant({ taskList }) {
+export default function AIAssistant({ taskList, username }) {
 	const [history, setHistory] = useState([]);
 	const [formData, setFormData] = useState('');
-	let prompt = '';
-	//const [currentPrompt, setCurrentPrompt] = useState('');
 	const [currentPromptList, setCurrentPromptList] = useState([]);
 	const [response, setResponse] = useState('');
 	const [responseList, setResponseList] = useState([]);
 	const [msg, setMsg] = useState('');
+	const scrollRef = useRef(null);
 	const taskListJson = JSON.stringify(taskList);
+	let prompt = '';
+
+	useEffect(() => {
+		const scroll = scrollRef.current;
+		if (!scroll) return;
+		scroll.scrollTo({ top: scroll.scrollHeight - scroll.clientHeight, behavior: 'smooth' });
+	}, [responseList]);
 
 	const onChange = e => {
 		const { value } = e.target;
 		setFormData(value);
 	};
 
-	//Get the users input as the prompt
 	const getUserPrompt = text => {
-		const setup = `This sessions conversation history: ${history}. The current list of tasks in JSON format: ${taskListJson}. The users prompt for you to respond to: `;
+		const setup = `This sessions conversation history: ${history}. The current list of tasks in JSON format: ${taskListJson}. The users username is ${username}. ${username}'s prompt for you to respond to: `;
 		const userPrompt = text;
 		prompt = `${setup} ${userPrompt}.`;
-		//setCurrentPrompt(text);
 		setCurrentPromptList(prev => [...prev, text]);
 	};
 
@@ -51,14 +56,9 @@ export default function AIAssistant({ taskList }) {
 			console.info(`AI response: ${data.response}`);
 
 			setMsg('');
-			//console.log('response', data.response);
-			setResponse(data.response);
 			addResponseToList(data.response);
 
 			setHistory(prev => [...prev, `user: ${formData}, assistant: ${data.response}`]);
-
-			setFormData('');
-			//console.log('history', history);
 		} catch (error) {
 			setMsg(error);
 		}
@@ -88,13 +88,11 @@ export default function AIAssistant({ taskList }) {
 	};
 
 	const handleKeyDown = e => {
-		// Enter **without** Shift (or Meta/Control) = submit
 		if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
-			e.preventDefault(); // stop newline insertion
-			handleOnSubmit(e); // reuse the same submit logic
+			e.preventDefault();
+			handleOnSubmit(e);
 			setFormData('');
 		}
-		// If Shift+Enter (or Ctrl+Enter) we let the default happen → newline
 	};
 
 	const handleOnSubmit = e => {
@@ -102,13 +100,17 @@ export default function AIAssistant({ taskList }) {
 		if (!formData.trim()) return;
 
 		getUserPrompt(formData);
+		setFormData('');
 		getResponse();
 	};
 
 	return (
 		<div className='assistant-container'>
 			<h2>AI assistant</h2>
-			<div className='ai-scroll-area'>
+			<div
+				className='ai-scroll-area'
+				ref={scrollRef}
+			>
 				<div className='response-area'>
 					<ResponseListComponent />
 					{msg && <p>{msg}</p>}

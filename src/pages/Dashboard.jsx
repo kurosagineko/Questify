@@ -243,7 +243,10 @@ export default function Dashboard() {
 				</div>
 			</div>
 			{/* <div className='metrics-view-container dash-border dash-shadow'></div> */}
-			<AI taskList={[...openList, ...inprogressList, ...completeList]} />
+			<AI
+				taskList={[...openList, ...inprogressList, ...completeList]}
+				username={user.username}
+			/>
 		</div>
 	);
 }
