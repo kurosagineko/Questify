@@ -1,25 +1,27 @@
 {
-	"name": "dashstar",
-	"main": "server.js",
+	"name": "Questify",
+	"main": "./server/server.js",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"start": "node ./server.js",
-		"reset": "npm run createDB && npm run start",
+		"start": "node ./server/server.js",
 		"dev": "vite",
 		"build": "vite build",
 		"lint": "eslint .",
 		"preview": "vite preview",
 		"createDB": "node ./server/scripts/createDB.cjs",
-		"prod": "npm run start && npm run dev"
+		"prod": "npm run build && npm run start",
+		"reset": "npm run createDB && npm run prod"
 	},
 	"dependencies": {
+		"@popperjs/core": "^2.11.8",
 		"@tailwindcss/vite": "^4.1.17",
 		"antd": "^6.0.0",
 		"axios": "^1.13.2",
 		"bcrypt": "^6.0.0",
 		"body-parser": "^2.2.1",
+		"bootstrap": "^5.3.8",
 		"cookie-parser": "^1.4.7",
 		"cors": "^2.8.5",
 		"docker": "^1.0.0",

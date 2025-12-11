@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 const AuthContext = createContext({
 	user: null,
 	loading: true,
@@ -16,7 +18,7 @@ export const AuthProvider = ({ children }) => {
 	useEffect(() => {
 		const checkSession = async () => {
 			try {
-				const res = await fetch('/api/me', {
+				const res = await fetch(`${API_BASE}/me`, {
 					credentials: 'include',
 					cache: 'no-store',
 				});
@@ -40,7 +42,7 @@ export const AuthProvider = ({ children }) => {
 
 	const logout = async () => {
 		try {
-			await fetch('/api/logout', {
+			await fetch(`${API_BASE}/logout`, {
 				credentials: 'include',
 			});
 		} catch (error) {
@@ -50,11 +52,7 @@ export const AuthProvider = ({ children }) => {
 		navigate('/login', { state: { fromLandingBtn: 'login' }, replace: true });
 	};
 
-	return (
-		<AuthContext.Provider value={{ user, loading, login, logout }}>
-			{children}
-		</AuthContext.Provider>
-	);
+	return <AuthContext.Provider value={{ user, loading, login, logout }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => useContext(AuthContext);

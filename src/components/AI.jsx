@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import './CSS/AI.css';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 // history limit, possibly 100?
 // prompt is getting too big with history and json
 
@@ -13,7 +15,8 @@ export default function AIAssistant({ taskList, username }) {
 	const [msg, setMsg] = useState('');
 	const scrollRef = useRef(null);
 	const taskListJson = JSON.stringify(taskList);
-  const hasMounted = useRef(false);
+	console.log('taskListJson:', taskListJson);
+	const hasMounted = useRef(false);
 	const [isOpen, setIsOpen] = useState(false);
 	let prompt = '';
 
@@ -39,7 +42,9 @@ export default function AIAssistant({ taskList, username }) {
 	};
 
 	const getUserPrompt = text => {
-		const setup = `This sessions conversation history: ${history}. The current list of tasks in JSON format: ${taskListJson}. The users username is ${username}. ${username}'s prompt for you to respond to: `;
+		const setup = `This sessions conversation history: ${history.join(
+			' '
+		)}. The current list of tasks in JSON format: ${taskListJson}. The users username is ${username}. ${username}'s prompt for you to respond to: `;
 		const userPrompt = text;
 		prompt = `${setup} ${userPrompt}.`;
 		setCurrentPromptList(prev => [...prev, text]);
@@ -51,7 +56,7 @@ export default function AIAssistant({ taskList, username }) {
 		setMsg('Thinking...');
 
 		try {
-			const resp = await fetch('http://localhost:3002/api/generate', {
+			const resp = await fetch(`${API_BASE}/generate`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({

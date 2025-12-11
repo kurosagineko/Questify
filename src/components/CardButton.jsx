@@ -1,9 +1,6 @@
-export default function CardButton({
-	status,
-	user_id,
-	task_id,
-	refreshHandler,
-}) {
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
+export default function CardButton({ status, user_id, task_id, refreshHandler }) {
 	let buttonLabel = '';
 	let buttonStyle = {};
 	if (status === 'complete') {
@@ -45,7 +42,7 @@ export default function CardButton({
 		};
 
 		try {
-			const response = await fetch(`/api/tasks/${task_id}`, {
+			const response = await fetch(`${API_BASE}/tasks/${task_id}`, {
 				method: 'PUT',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(payload),

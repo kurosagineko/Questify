@@ -142,7 +142,7 @@ router.post(
 			.isLength({ min: 8 })
 			.withMessage('Password must be at least 8 characters'),
 
-		body('avatar_url').optional({ checkFalsy: true }).isURL().withMessage('Avatar URL must be a valid URL'),
+		body('avatar_url').optional({ checkFalsy: true }),
 		validate,
 	],
 	async (req, res) => {

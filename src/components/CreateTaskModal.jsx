@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import './CSS/createtaskmodal.css';
 
-export default function CreateTaskModal({
-	onClickHandler,
-	id,
-	refreshHandler,
-}) {
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
+export default function CreateTaskModal({ onClickHandler, id, refreshHandler }) {
 	const initial = {
 		task_name: '',
 		task_desc: '',
@@ -42,7 +40,7 @@ export default function CreateTaskModal({
 		});
 
 		try {
-			const response = await fetch('http://localhost:3002/api/tasks', {
+			const response = await fetch(`${API_BASE}/tasks`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -69,11 +67,7 @@ export default function CreateTaskModal({
 	return (
 		<div className='task-modal'>
 			<div className='modal-header'>
-				<h2
-					style={{ fontSize: '2rem', textAlign: 'center', marginTop: '3rem' }}
-				>
-					Create Task
-				</h2>
+				<h2 style={{ fontSize: '2rem', textAlign: 'center', marginTop: '3rem' }}>Create Task</h2>
 			</div>
 
 			<div>

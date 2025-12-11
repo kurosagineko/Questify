@@ -9,6 +9,8 @@ import XpBar from '../components/XpBar';
 import AI from '../components/AI';
 import './CSS/dashboard.css';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 import avatarDefault from '../assets/avatardefault.svg';
 import burgerMenuIcon from '../assets/BurgerMenuIcon.png';
 
@@ -62,7 +64,7 @@ export default function Dashboard() {
 		const abort = new AbortController();
 
 		try {
-			fetch(`/api/tasks?user_id=${user.id}`, {
+			fetch(`${API_BASE}/tasks?user_id=${user.id}`, {
 				signal: abort.signal,
 			})
 				.then(res => {

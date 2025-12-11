@@ -6,9 +6,10 @@ import './CSS/loginregister.css';
 import avatarDefault from '../assets/avatardefault.svg';
 import Loading from '../components/Loading';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 export default function LoginRegister() {
 	const { state } = useLocation();
-	console.log('state:', state);
 	const { login } = useAuth();
 	const navigate = useNavigate();
 	const [formDataLogin, setFormDataLogin] = useState({
@@ -67,13 +68,13 @@ export default function LoginRegister() {
 		let response;
 
 		if (state?.fromLandingBtn === 'login') {
-			response = await sendData('/api/login', formDataLogin);
+			response = await sendData(`${API_BASE}/login`, formDataLogin);
 		} else {
 			if (formDataRegister.password !== passwordMatch) {
 				console.log('Passwords must match');
 				return;
 			}
-			response = await sendData('/api/register', formDataRegister);
+			response = await sendData(`${API_BASE}/register`, formDataRegister);
 		}
 
 		const responseData = await response.json();
@@ -92,7 +93,7 @@ export default function LoginRegister() {
 				replace: true,
 			});
 		} else {
-			setMsg(responseData.error.message);
+			setMsg(responseData.error);
 		}
 	};
 
