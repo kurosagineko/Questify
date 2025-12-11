@@ -61,19 +61,6 @@ app.use((req, res, next) => {
 	next();
 });
 
-// app.use(
-// 	cors({
-// 		origin: (origin, callback) => {
-// 			if (!origin) return callback(null, true);
-// 			if (whitelist.includes(origin)) return callback(null, true);
-// 			return callback(new Error('Not allowed by CORS'));
-// 		},
-// 		credentials: true,
-// 		allowedHeaders: ['Content-Type', 'Authorization'],
-// 		exposedHeaders: ['Set-Cookie'],
-// 		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-// 	})
-// );
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));

@@ -14,11 +14,24 @@ export default function AIAssistant({ taskList, username }) {
 	const [responseList, setResponseList] = useState([]);
 	const [msg, setMsg] = useState('');
 	const scrollRef = useRef(null);
-	const taskListJson = JSON.stringify(taskList);
-	console.log('taskListJson:', taskListJson);
+  const [formattedTaskData, setFormattedTaskData] = useState('');
 	const hasMounted = useRef(false);
 	const [isOpen, setIsOpen] = useState(false);
 	let prompt = '';
+
+	const formatTaskData = () => {
+		let formattedData = [];
+		for (let i = 0; i < taskList.length; i++) {
+			formattedData.push(
+				`(Task ${i + 1}: (Task name: ${taskList[i].task_name}. Task description: ${
+					taskList[i].task_desc
+				}. Task status: ${taskList[i].status}))`
+			);
+		}
+		const data = formattedData.join(', ').trim();
+
+		setFormattedTaskData(data);
+	};
 
 	useEffect(() => {
 		if (hasMounted.current) return;
@@ -29,6 +42,10 @@ export default function AIAssistant({ taskList, username }) {
 		setCurrentPromptList(prev => [...prev, prompt]);
 		getResponse();
 	}, []);
+
+	useEffect(() => {
+		formatTaskData();
+	}, [taskList]);
 
 	useEffect(() => {
 		const scroll = scrollRef.current;
@@ -44,7 +61,7 @@ export default function AIAssistant({ taskList, username }) {
 	const getUserPrompt = text => {
 		const setup = `This sessions conversation history: ${history.join(
 			' '
-		)}. The current list of tasks in JSON format: ${taskListJson}. The users username is ${username}. ${username}'s prompt for you to respond to: `;
+		)}. The current list of tasks in JSON format: ${formattedTaskData}. The users username is ${username}. ${username}'s prompt for you to respond to: `;
 		const userPrompt = text;
 		prompt = `${setup} ${userPrompt}.`;
 		setCurrentPromptList(prev => [...prev, text]);
