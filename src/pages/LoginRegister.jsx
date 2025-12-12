@@ -1,6 +1,7 @@
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import logo from '../assets/dash-icon.png';
 import './CSS/loginregister.css';
 import avatarDefault from '../assets/avatardefault.svg';
@@ -11,6 +12,7 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL;
 export default function LoginRegister() {
 	const { state } = useLocation();
 	const { login } = useAuth();
+	const { usersTheme } = useTheme();
 	const navigate = useNavigate();
 	const [formDataLogin, setFormDataLogin] = useState({
 		email: '',
@@ -98,7 +100,7 @@ export default function LoginRegister() {
 	};
 
 	return (
-		<div className='navy'>
+		<div className={`${usersTheme}`}>
 			{!loading ? (
 				<div>
 					{/* LOGIN */}

@@ -3,6 +3,7 @@ import CarouselBanner from '../components/CarouselBanner';
 import LandingFooter from '../components/LandingFooter';
 import FeatureSection from '../components/FeatureSection';
 import TextType from '../components/TextType';
+import { useTheme } from '../context/ThemeContext';
 import './CSS/landing.css';
 
 const features = [
@@ -27,8 +28,9 @@ const features = [
 ];
 
 export default function Landing() {
+	const { usersTheme } = useTheme();
 	return (
-		<div className='landing navy'>
+		<div className={`landing ${usersTheme}`}>
 			<LandingHeader />
 			<TextType
 				className='tagline'

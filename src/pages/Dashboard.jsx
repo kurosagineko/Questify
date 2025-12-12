@@ -1,6 +1,7 @@
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useState, useContext, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import TaskCard from '../components/TaskCard';
 import TaskList from '../components/TaskList';
 import TeamIconButton from '../components/TeamIconButton';
@@ -39,6 +40,7 @@ import burgerMenuIcon from '../assets/BurgerMenuIcon.png';
 
 export default function Dashboard() {
 	const { user, logout } = useAuth();
+	const { usersTheme } = useTheme();
 	const [level, setLevel] = useState(0);
 	const [xp, setTotalXp] = useState(0);
 	const [currentXp, setCurrentXp] = useState(0);
@@ -52,7 +54,6 @@ export default function Dashboard() {
 	const [refreshCounter, setRefreshCounter] = useState(0); // bump this when a change happens in the task lists to trigger the hook
 
 	useEffect(() => {
-		console.log('Dashboard', user);
 		setLevel(user.level);
 		setTotalXp(user.total_xp);
 		setCurrentXp(user.current_xp);
@@ -137,7 +138,7 @@ export default function Dashboard() {
 	};
 
 	return (
-		<div className='dashboard navy'>
+		<div className={`dashboard ${usersTheme}`}>
 			{' '}
 			{/* change navy to user selected theme */}
 			<div>

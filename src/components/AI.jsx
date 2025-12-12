@@ -5,6 +5,7 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 // history limit, possibly 100?
 // prompt is getting too big with history and json
+// try priming the AI with the data/setup first then subsequent requests only have users prompt?
 
 export default function AIAssistant({ taskList, username }) {
 	const [history, setHistory] = useState([]);
@@ -14,11 +15,12 @@ export default function AIAssistant({ taskList, username }) {
 	const [responseList, setResponseList] = useState([]);
 	const [msg, setMsg] = useState('');
 	const scrollRef = useRef(null);
-  const [formattedTaskData, setFormattedTaskData] = useState('');
+	const [formattedTaskData, setFormattedTaskData] = useState('');
 	const hasMounted = useRef(false);
 	const [isOpen, setIsOpen] = useState(false);
 	let prompt = '';
 
+  // format the array of tasks
 	const formatTaskData = () => {
 		let formattedData = [];
 		for (let i = 0; i < taskList.length; i++) {
@@ -38,7 +40,7 @@ export default function AIAssistant({ taskList, username }) {
 		hasMounted.current = true;
 
 		// prompt the AI with 'Hello' to spin up the AI and also to add a message in the chat
-		prompt = 'Hello, please introduce yourself.';
+		prompt = `I am ${username}, Hello, please introduce yourself.`;
 		setCurrentPromptList(prev => [...prev, prompt]);
 		getResponse();
 	}, []);
@@ -47,6 +49,7 @@ export default function AIAssistant({ taskList, username }) {
 		formatTaskData();
 	}, [taskList]);
 
+	// scroll to bottom of ai chat log when new response
 	useEffect(() => {
 		const scroll = scrollRef.current;
 		if (!scroll) return;
