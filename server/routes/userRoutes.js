@@ -41,11 +41,11 @@ router.put(
 			.isLength({ max: 150 })
 			.withMessage('Email may be at most 150 characters'),
 
-		body('current_password')
-			.exists({ checkFalsy: true })
-			.isLength({ min: 8 })
-			.withMessage('Current password is required')
-			.withMessage('Password must be at least 8 characters'),
+		// body('current_password')
+		// 	.exists({ checkFalsy: true })
+		// 	.isLength({ min: 8 })
+		// 	.withMessage('Current password is required')
+		// 	.withMessage('Password must be at least 8 characters'),
 
 		body('new_password').optional().isLength({ min: 8 }).withMessage('Password must be at least 8 characters'),
 
@@ -71,8 +71,8 @@ router.put(
 		}
 
 		// check if current_password matches the users password in user_id row
-		const password_match = await bcrypt.compare(current_password, user.password_hash);
-		if (!password_match) return res.status(401).json({ error: { message: 'Incorrect password' } });
+		// const password_match = await bcrypt.compare(current_password, user.password_hash);
+		// if (!password_match) return res.status(401).json({ error: { message: 'Incorrect password' } });
 
 		const changes = {};
 		if (username && username !== user.username) changes.username = username;
@@ -88,8 +88,8 @@ router.put(
 			return res.status(400).json({ error: 'No change to apply' });
 		}
 
+		const transaction = await User.sequelize.transaction();
 		try {
-			const transaction = await Task.sequelize.transaction();
 			await User.update(changes, { where: { id: paramUserId }, transaction });
 			await transaction.commit();
 

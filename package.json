@@ -6,12 +6,12 @@
 	"type": "module",
 	"scripts": {
 		"start": "node ./server/server.js",
-		"dev": "npm run start && vite",
 		"build": "vite build",
 		"lint": "eslint .",
 		"preview": "vite preview",
 		"createDB": "node ./server/scripts/createDB.cjs",
 		"prod": "npm run build && npm run start",
+		"dev": "npm run start && vite",
 		"reset:prod": "npm run createDB && npm run prod",
 		"reset:dev": "npm run createDB && npm run dev"
 	},

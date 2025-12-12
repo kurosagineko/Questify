@@ -1,7 +1,6 @@
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useState, useContext, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
 import TaskCard from '../components/TaskCard';
 import TaskList from '../components/TaskList';
 import TeamIconButton from '../components/TeamIconButton';
@@ -33,14 +32,12 @@ import burgerMenuIcon from '../assets/BurgerMenuIcon.png';
 // achievements
 // get stars for leveling up, spend stars in a shop with company added rewards
 // individual store items and team wide store items
-// change theme through context
 // animations for leveling up, completing tasks, buying from store
 // slack and discord integration
 // 2FA and email verification
 
 export default function Dashboard() {
 	const { user, logout } = useAuth();
-	const { usersTheme } = useTheme();
 	const [level, setLevel] = useState(0);
 	const [xp, setTotalXp] = useState(0);
 	const [currentXp, setCurrentXp] = useState(0);
@@ -138,7 +135,7 @@ export default function Dashboard() {
 	};
 
 	return (
-		<div className={`dashboard ${usersTheme}`}>
+		<div>
 			{' '}
 			{/* change navy to user selected theme */}
 			<div>

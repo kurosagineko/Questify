@@ -4,7 +4,7 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 const ThemeContext = createContext('');
 
-const defaultTheme = 'ruby';
+const defaultTheme = 'navy';
 
 export const ThemeProvider = ({ children }) => {
 	const [usersTheme, setUserTheme] = useState(null);
@@ -21,9 +21,9 @@ export const ThemeProvider = ({ children }) => {
 
 				const { data } = await res.json();
 				const user = data.user;
-				setUserTheme(user.theme);
+				document.getElementsByTagName('html')[0].className = user.theme;
 			} catch (_) {
-				setUserTheme(defaultTheme);
+				document.getElementsByTagName('html')[0].className = defaultTheme;
 			}
 		};
 		checkSession();
@@ -41,7 +41,7 @@ export const ThemeProvider = ({ children }) => {
 
 			if (!res.ok) throw new Error('Changing theme failed');
 
-			setUserTheme(theme);
+			document.getElementsByTagName('html')[0].className = theme;
 		} catch (error) {
 			console.log(error);
 		}

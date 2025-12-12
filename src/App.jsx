@@ -3,7 +3,6 @@ import './App.css';
 import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
-import Admin from './pages/Admin';
 import NotFound from './pages/NotFound';
 import LoginRegister from './pages/LoginRegister';
 import RequireAuth from './components/RequireAuth';
@@ -30,10 +29,6 @@ function App() {
 				<Route
 					path='/dashboard'
 					element={<Dashboard />}
-				/>
-				<Route
-					path='/admin'
-					element={<Admin />}
 				/>
 			</Route>
 
