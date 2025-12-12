@@ -34,6 +34,9 @@
 
   background: linear-gradient(to bottom, #8DA9C4, #7becca, #8DA9C4);
 }
+.navy-main-color {
+  background-color: #134074;
+}
 
 .ruby {
   --background-color: #ae8dc4;
@@ -51,6 +54,9 @@
   --complete-button-color: rgb(60, 14, 134);
 
   background: linear-gradient(to bottom, #ae8dc4, #ecbb7b, #ae8dc4);
+}
+.ruby-main-color {
+  background-color: #74132b;
 }
 
 a {
@@ -85,7 +91,6 @@ p {
 }
 
 button {
-  color: white !important;
   width: 150px;
   height: 50px;
   border-radius: 8px;
@@ -109,15 +114,3 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}

@@ -32,7 +32,7 @@ function signToken(payload) {
 const validate = (req, res, next) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
-		return res.status(400).json({ errors: errors.array() });
+		return res.status(400).json({ error: errors.array()[0].msg.toString() });
 	}
 	next();
 };
@@ -61,6 +61,7 @@ router.put(
 
 		body('current_password')
 			.if(body('new_password').exists())
+			.if(body('email').exists())
 			.exists({ checkFalsy: true })
 			.isLength({ min: 8 })
 			.withMessage('Current password is required')
@@ -68,7 +69,11 @@ router.put(
 
 		body('new_password').optional().isLength({ min: 8 }).withMessage('Password must be at least 8 characters'),
 
-		body('avatar_url').optional({ checkFalsy: true }).trim(),
+		body('avatar_url')
+			.optional({ checkFalsy: true })
+			.trim()
+			.isLength({ max: 255 })
+			.withMessage('URL cannot be more than 255 characters'),
 		validate,
 	],
 	async (req, res) => {
@@ -77,7 +82,7 @@ router.put(
 
 		if (authUserId !== paramUserId) {
 			return res.status(403).json({
-				error: { message: 'You are not allowed to edit this user' },
+				error: 'You are not allowed to edit this user',
 			});
 		}
 
@@ -86,22 +91,22 @@ router.put(
 		// find the user
 		const user = await User.findByPk(paramUserId);
 		if (!user) {
-			return res.status(404).json({ error: { message: 'User not found' } });
+			return res.status(404).json({ error: 'User not found' });
 		}
 
-		// Only verify current password if the user is changing their password
-		if (new_password) {
+		// Only verify current password if the user is changing their password or email
+		if (new_password || email) {
 			// check if current_password matches the users password in user_id row
 			const passwordMatch = await bcrypt.compare(current_password || '', user.password_hash);
 			if (!passwordMatch) {
-				return res.status(401).json({ error: { message: 'Incorrect current password' } });
+				return res.status(401).json({ error: 'Incorrect current password' });
 			}
 		}
 
 		// Whitelist theme values
 		const allowedThemes = ['navy', 'ruby'];
 		if (theme && !allowedThemes.includes(theme)) {
-			return res.status(400).json({ error: { message: 'Invalid theme' } });
+			return res.status(400).json({ error: 'Invalid theme' });
 		}
 
 		const changes = {};
@@ -156,7 +161,7 @@ router.put(
 		} catch (error) {
 			if (transaction) await transaction.rollback();
 			if (error.name === 'SequelizeUniqueConstraintError') {
-				return res.status(409).json({ error: { message: 'Email already exists' } });
+				return res.status(409).json({ error: 'Email already exists' });
 			}
 			return res.status(400).json({ error: 'Error editing user details' });
 		}
