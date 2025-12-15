@@ -17,6 +17,7 @@
   padding: 0;
 }
 
+/* ======== Themes =========== */
 .navy {
   --background-color: #8DA9C4;
   --highlight-color: #EEF4ED;
@@ -57,6 +58,27 @@
 }
 .ruby-main-color {
   background-color: #74132b;
+}
+
+.dark {
+  --background-color: #0f0f0f;
+  --highlight-color: #b7bdb6;
+
+  --main-color: #131313;
+  --secondary-color: #1b1b1b;
+  --tertiary-color: #2b2b2b;
+  --complementary-color: #2c021c;
+
+  --border: 2px solid #2c0212;
+  --box-shadow: 10px 10px 20px rgb(5, 0, 3);
+
+  --assign-button-color: rgb(29, 3, 77);
+  --complete-button-color: rgb(3, 68, 46);
+
+  background: linear-gradient(to bottom, #0e0e0e, #0c001b, #0e0e0e);
+}
+.dark-main-color {
+  background-color: #131313;
 }
 
 a {

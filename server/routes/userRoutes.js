@@ -104,7 +104,7 @@ router.put(
 		}
 
 		// Whitelist theme values
-		const allowedThemes = ['navy', 'ruby'];
+		const allowedThemes = ['navy', 'ruby', 'dark', 'light'];
 		if (theme && !allowedThemes.includes(theme)) {
 			return res.status(400).json({ error: 'Invalid theme' });
 		}

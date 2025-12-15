@@ -1,0 +1,29 @@
+.gradient-bg {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: inherit;
+	animation-name: gradientShift;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	will-change: background-position;
+}
+
+@keyframes gradientShift {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.gradient-bg {
+		animation: none !important;
+		transition: none !important;
+	}
+}

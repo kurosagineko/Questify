@@ -7,6 +7,7 @@ import TeamIconButton from '../components/TeamIconButton';
 import CreateTaskModal from '../components/CreateTaskModal';
 import XpBar from '../components/XpBar';
 import AI from '../components/AI';
+import AnimatedGradientBackground from '../components/AnimatedGradientBackground';
 import './CSS/dashboard.css';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
@@ -163,7 +164,9 @@ export default function Dashboard() {
 				<button onClick={() => logout()}>Logout</button>
 
 				<div className='workspace-label-container'>
-					<h2 className='workspace-label'>{currentBoard}</h2>
+					<AnimatedGradientBackground animationSpeed='10s'>
+						<h2 className='workspace-label'>{currentBoard}</h2>
+					</AnimatedGradientBackground>
 				</div>
 
 				<div className='widgets'>
@@ -192,7 +195,7 @@ export default function Dashboard() {
 				</div>
 			</div>
 			{}
-			<div>{<XpBar />}</div>
+			<div style={{ display: 'flex', justifyContent: 'center' }}>{<XpBar />}</div>
 			<div className='dash-main'>
 				{/* Add images for buttons here with onClick functionality */}
 				<div className='dash-buttons dash-border dash-shadow'>

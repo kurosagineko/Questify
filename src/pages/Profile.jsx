@@ -225,6 +225,14 @@ function Profile() {
 								>
 									Ruby
 								</option>
+								<option
+									className='profile-theme-option dark-main-color'
+									id='dark'
+									name='dark'
+									value='dark'
+								>
+									Dark
+								</option>
 							</select>
 						</div>
 						{msg && <p style={{ color: 'Red' }}>Error: {msg}</p>}

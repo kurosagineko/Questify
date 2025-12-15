@@ -48,7 +48,7 @@ app.use((req, res, next) => {
 			"script-src 'self' https://cdn.jsdelivr.net; " +
 			"style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; " +
 			"font-src 'self' https://fonts.gstatic.com; " +
-			"img-src 'self' data: blob:; " +
+			"img-src 'self' https: data: blob:; " +
 			"connect-src 'self';"
 	);
 	res.header('Access-Control-Allow-Credentials', 'true');
@@ -71,7 +71,7 @@ app.use('/api', registerLoginRoute);
 app.use('/api', taskRoutes);
 app.use('/api', userRoutes);
 
-app.use(express.static(path.join(__dirname, '../dist')));
+process.env.NODE_ENV = 'production' && app.use(express.static(path.join(__dirname, '../dist')));
 
 app.use((error, req, res, next) => {
 	console.error('error:', error);
