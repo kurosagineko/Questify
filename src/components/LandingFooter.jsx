@@ -4,7 +4,7 @@ export default function LandingFooter() {
 	return (
 		<footer>
 			<p>Copyright © 2025</p>
-			<p>Eri Belladonna</p>
+			<p>Kurosagineko</p>
 		</footer>
 	);
 }

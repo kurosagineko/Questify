@@ -5,8 +5,8 @@
 	margin: 25px 50px;
 }
 
-nav button {
-	margin-left: 50px;
+.LandingHeaderBtn {
+	margin-left: 30px;
 }
 
 .LandingHeaderBtn:hover {
@@ -19,4 +19,18 @@ nav button {
   display: flex;
   align-items: center;
   gap: 10px
+}
+
+.free-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  padding: 10px;
+  background-color: #131313;
+  border: 2px solid var(--complementary-color);
+  border-radius: 20px;
 }

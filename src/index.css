@@ -19,8 +19,9 @@
 
 /* ======== Themes =========== */
 .navy {
-  --background-color: #8DA9C4;
-  --highlight-color: #EEF4ED;
+  /* --background-color: #8DA9C4; */
+  --background-color: #141618;
+  --highlight-color: rgb(14, 134, 94);
 
   --main-color: #134074;
   --secondary-color: #13315C;
@@ -33,7 +34,7 @@
   --assign-button-color: rgb(56, 14, 134);
   --complete-button-color: rgb(14, 134, 94);
 
-  background: linear-gradient(to bottom, #8DA9C4, #7becca, #8DA9C4);
+  background: linear-gradient(to bottom, #141618, #134074, #141618);
 }
 .navy-main-color {
   background-color: #134074;
@@ -116,7 +117,7 @@ button {
   width: 150px;
   height: 50px;
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: 1px solid #13315C;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;

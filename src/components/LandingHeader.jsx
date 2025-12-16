@@ -22,6 +22,33 @@ export default function LandingHeader() {
 				</GradientText>
 			</div>
 
+			<div>
+				<Link to='/features'>
+					<button
+						className='LandingHeaderBtn'
+						style={{ color: 'white' }}
+					>
+						Features
+					</button>
+				</Link>
+				<Link to='/pricing'>
+					<button
+						className='LandingHeaderBtn'
+						style={{ color: 'white' }}
+					>
+						Pricing
+					</button>
+				</Link>
+				<Link to='/faq'>
+					<button
+						className='LandingHeaderBtn'
+						style={{ color: 'white' }}
+					>
+						FAQ
+					</button>
+				</Link>
+			</div>
+
 			<nav>
 				<div>
 					<Link
